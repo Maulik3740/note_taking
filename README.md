@@ -32,10 +32,8 @@ A **simple and functional note-taking app** built using **Flutter** and **Fireba
 
 | Login | Notes List | Edit Notes |
 |-------|------------|------------|
-| <img width="387" height="825" alt="Screenshot 2025-08-22 at 5 45 26 PM" src="https://github.com/user-attachments/assets/8a32cc7e-b554-483e-b4ed-eb147f2d249d" />
- <img width="387" height="825" alt="Screenshot 2025-08-22 at 5 45 01 PM" src="https://github.com/user-attachments/assets/9a6e041b-1cfe-460b-81a9-c26e6c8103d9" />
-| ![Uploading Screenshot 2025-08-22 at 5.45.26 PM.png…]() | <img width="387" height="825" alt="Screenshot 2025-08-22 at 5 45 45 PM" src="https://github.com/user-attachments/assets/e29ac74f-319c-4fac-8a35-0df8b90cfac5" />
- |
+| <img src="screenshots/login.png" width="200"/> | <img src="screenshots/notes_list.png" width="200"/> | <img src="screenshots/edit_note.png" width="200"/> |
+
 
 
 > *(Add your screenshots into a `/screenshots` folder in the repo and rename them accordingly.)*
@@ -81,7 +79,8 @@ flutter run
 
 📲 APK Download
 
-👉 Download APK
+👉 [Download APK](apk/app-release.apk)
+
 
 (Upload your built .apk in GitHub Releases or inside an /apk/ folder and link it here.)
 
