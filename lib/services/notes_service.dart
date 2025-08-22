@@ -20,9 +20,7 @@ class NotesService {
   Future<void> addNote(String content) async {
     final uid = _auth.currentUser!.uid;
     final now = DateTime.now();
-    final title = _makeTitle(content);
     await _notesRef(uid).add({
-      'title': title,
       'content': content,
       'createdAt': Timestamp.fromDate(now),
       'updatedAt': Timestamp.fromDate(now),
@@ -32,9 +30,7 @@ class NotesService {
   Future<void> updateNote(Note note, String newContent) async {
     final uid = _auth.currentUser!.uid;
     final now = DateTime.now();
-    final title = _makeTitle(newContent);
     await _notesRef(uid).doc(note.id).update({
-      'title': title,
       'content': newContent,
       'updatedAt': Timestamp.fromDate(now),
     });
@@ -45,8 +41,10 @@ class NotesService {
     await _notesRef(uid).doc(note.id).delete();
   }
 
-  String _makeTitle(String content) {
-    final s = content.trim().split('\n').first;
-    return s.length > 50 ? '${s.substring(0, 50)}…' : s;
+  Future<void> refreshNotes() async {
+    final uid = _auth.currentUser!.uid;
+    await _notesRef(uid)
+        .orderBy('updatedAt', descending: true)
+        .get(const GetOptions(source: Source.server));
   }
 }

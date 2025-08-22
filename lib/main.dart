@@ -1,13 +1,13 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:note_taking/pages/login_page.dart';
+import 'package:note_taking/pages/notes_page.dart';
+import 'package:note_taking/pages/sign_up_page.dart';
+import 'package:note_taking/pages/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'services/auth_service.dart';
-import 'pages/login_page.dart';
-import 'pages/notes_page.dart';
 
-// NOTE: We intentionally call Firebase.initializeApp() without options.
-// On Android/iOS, values are pulled from google-services.json / GoogleService-Info.plist.
-// For Web/Mac/Windows, follow README to add DefaultFirebaseOptions.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -20,39 +20,18 @@ class NotesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthService()..bindAuthState()),
-      ],
+      providers: [ChangeNotifierProvider(create: (_) => AuthService())],
       child: MaterialApp(
-        title: 'Notes',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-          inputDecorationTheme: const InputDecorationTheme(
-            border: OutlineInputBorder(),
-          ),
-        ),
-        home: const _AuthGate(),
+        title: 'Notes Taking',
         debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        routes: {
+          '/': (_) => const SplashPage(),
+          '/login': (_) => const LoginPage(),
+          '/sign-up': (_) => const SignUpPage(),
+          '/home': (_) => const NotesPage(),
+        },
       ),
     );
-  }
-}
-
-class _AuthGate extends StatelessWidget {
-  const _AuthGate();
-
-  @override
-  Widget build(BuildContext context) {
-    final auth = context.watch<AuthService>();
-    if (auth.isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-    if (auth.user != null) {
-      return const NotesPage();
-    }
-    return const LoginPage();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:note_taking/constant/app_color.dart';
 import '../models/note.dart';
 import '../services/notes_service.dart';
 import '../utils/snack.dart';
@@ -30,98 +31,155 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final maxWidth = 720.0;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(widget.note.title.isEmpty ? 'Note' : widget.note.title),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        titleSpacing: 0,
+        title: Text(
+          'Edit Notes',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: maxWidth),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _controller,
+                // expands: true,
+                maxLines: 200,
+                minLines: null,
+                autofocus: false,
+                decoration: InputDecoration(
+                  hintText: 'Enter content of this note',
+                  // alignLabelWithHint: false,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.primary),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.primary,
+                    ), 
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.primary,
+                      width: 2,
+                    ), // when focused
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Row(
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Created: ${DateFormat('dd MMM yyyy • HH:mm').format(widget.note.createdAt)}'
-                    '\nUpdated: ${DateFormat('dd MMM yyyy • HH:mm').format(widget.note.updatedAt)}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ),
-                const SizedBox(height: 12),
                 Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    expands: true,
-                    maxLines: null,
-                    minLines: null,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter content of this note',
-                      alignLabelWithHint: true,
+                  child: GestureDetector(
+                    onTap: () async {
+                      if(_controller.text.isEmpty){
+                        showSnack(context, 'Saved changes');
+                      }
+                      await _notesService.updateNote(
+                        widget.note,
+                        _controller.text,
+                      );
+                      if (mounted) {
+                        showSnack(context, 'Saved changes');
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Save',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: FilledButton(
-                        onPressed: () async {
-                          await _notesService.updateNote(widget.note, _controller.text);
-                          if (mounted) {
-                            showSnack(context, 'Saved changes');
-                            Navigator.of(context).pop(); // Close and refresh list
-                          }
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12.0),
-                          child: Text('Save'),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.red,
-                        ),
-                        onPressed: () async {
-                          final ok = await showDialog<bool>(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Delete note?'),
-                              content: const Text('This action cannot be undone.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                FilledButton.tonal(
-                                  onPressed: () => Navigator.pop(context, true),
-                                  child: const Text('Delete'),
-                                ),
-                              ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final ok = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(
+                            'Delete note?',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w500,
                             ),
-                          );
-                          if (ok != true) return;
-                          await _notesService.deleteNote(widget.note);
-                          if (mounted) {
-                            Navigator.of(context).pop(); // Close this screen
-                          }
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12.0),
-                          child: Text('Delete'),
+                          ),
+                          content: Text(
+                            'This action cannot be undone.',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: Text(
+                                'Cancel',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            FilledButton.tonal(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: Text(
+                                'Delete',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                      if (ok != true) return;
+                      await _notesService.deleteNote(widget.note);
+                      if (mounted) {
+                        Navigator.of(context).pop(); // Close this screen
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Delete',
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

@@ -9,7 +9,11 @@ class AuthService extends ChangeNotifier {
   User? get user => _user;
   bool get isLoading => _isLoading;
 
-  void bindAuthState() {
+  AuthService() {
+    _bindAuthState();
+  }
+
+  void _bindAuthState() {
     _auth.authStateChanges().listen((u) {
       _user = u;
       _isLoading = false;
@@ -17,32 +21,36 @@ class AuthService extends ChangeNotifier {
     });
   }
 
-  Future<void> signIn(String email, String password) async {
-    _isLoading = true;
-    notifyListeners();
-    try {
+  /// Sign in → returns error message if failed, null if success
+  Future<String?> signIn(String email, String password) async {
+    return _handleAuth(() async {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      _isLoading = false;
-      notifyListeners();
-      rethrow;
-    }
-    _isLoading = false;
-    notifyListeners();
+    });
   }
 
-  Future<void> signUp(String email, String password) async {
+  /// Sign up → returns error message if failed, null if success
+  Future<String?> signUp(String email, String password) async {
+    return _handleAuth(() async {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+    });
+  }
+
+  /// Common handler for both sign in & sign up
+  Future<String?> _handleAuth(Future<void> Function() action) async {
     _isLoading = true;
     notifyListeners();
+
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      await action();
+      _isLoading = false;
+      notifyListeners();
+      return null; // success
     } on FirebaseAuthException catch (e) {
       _isLoading = false;
       notifyListeners();
-      rethrow;
+      return e.message ?? 'Authentication failed';
     }
-    _isLoading = false;
-    notifyListeners();
   }
 
   Future<void> signOut() async {

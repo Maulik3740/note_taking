@@ -5,14 +5,14 @@ import 'package:note_taking/utils/auth_helpers.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthService>();
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Welcome back",
+                      "Create account",
                       style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
@@ -62,23 +63,25 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _email,
-                      decoration: InputDecoration(labelText: 'Email', 
-                       border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.primary,
-                        ), // fallback
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primary,
+                          ), // fallback
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primary,
+                          ), // default border
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primary,
+                            width: 2,
+                          ), // when focused
+                        ),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.primary,
-                        ), // default border
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.primary,
-                          width: 2,
-                        ), // when focused
-                      ),),
                       validator: validateEmail,
                     ),
                     const SizedBox(height: 12),
@@ -87,22 +90,22 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: _obscure,
                       decoration: InputDecoration(
                         labelText: 'Password',
-                         border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.primary,
-                        ), // fallback
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.primary,
-                        ), // default border
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.primary,
-                          width: 2,
-                        ), // when focused
-                      ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primary,
+                          ), // fallback
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primary,
+                          ), // default border
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primary,
+                            width: 2,
+                          ), // when focused
+                        ),
                         suffixIcon: IconButton(
                           onPressed: () => setState(() => _obscure = !_obscure),
                           icon: Icon(
@@ -121,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                               formKey: _formKey,
                               email: _email,
                               password: _password,
-                              authFn: auth.signIn,
+                              authFn: auth.signUp,
                             ),
                       child: Container(
                         width: double.infinity,
@@ -137,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Colors.white,
                                 )
                               : Text(
-                                  "Login",
+                                  "Sign Up",
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
@@ -148,10 +151,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/sign-up');
+                        Navigator.pushReplacementNamed(context, '/login');
                       },
                       child: Text(
-                        "New here? Create an account",
+                        "Already have an account? Login",
                         style: GoogleFonts.poppins(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w500,
