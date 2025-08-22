@@ -32,7 +32,8 @@ A **simple and functional note-taking app** built using **Flutter** and **Fireba
 
 | Login | Notes List | Edit Notes |
 |-------|------------|------------|
-| <img width="387" height="825" alt="Screenshot 2025-08-22 at 5 45 01 PM" src="https://github.com/user-attachments/assets/f4cdc782-d197-45da-ba10-415180a95595" /> |  <img width="387" height="825" alt="Screenshot 2025-08-22 at 5 45 26 PM" src="https://github.com/user-attachments/assets/9fbe5dea-5ef4-4e18-96db-68defb7e4df9" /> | <img width="387" height="825" alt="Screenshot 2025-08-22 at 5 45 45 PM" src="https://github.com/user-attachments/assets/80a29d66-be9a-4bb2-be146e46fdc88293" />
+| <img width="387" height="825" alt="Screenshot 2025-08-22 at 5 45 01 PM" src="https://github.com/user-attachments/assets/f4cdc782-d197-45da-ba10-415180a95595" /> |  <img width="387" height="825" alt="Screenshot 2025-08-22 at 5 45 26 PM" src="https://github.com/user-attachments/assets/9fbe5dea-5ef4-4e18-96db-68defb7e4df9" /> | <img width="387" height="825" alt="Screenshot 2025-08-22 at 5 45 45 PM" src="https://github.com/user-attachments/assets/6d0e931b-8852-40d6-91e4-853192cb4a53" />
+
  |
 
 
