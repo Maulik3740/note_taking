@@ -32,7 +32,7 @@ A **simple and functional note-taking app** built using **Flutter** and **Fireba
 
 | Login | Notes List | Edit Notes |
 |-------|------------|------------|
-| <img src="screenshots/login.png" width="200"/> | <img src="screenshots/notes_list.png" width="200"/> | <img src="screenshots/edit_note.png" width="200"/> |
+| ![Login](screenshots/login.png) | ![Notes List](screenshots/notes_list.png) | ![Edit Notes](screenshots/edit_note.png) |
 
 
 
